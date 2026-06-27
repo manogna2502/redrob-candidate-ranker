@@ -108,6 +108,8 @@ See `src/redrob_ranker/pipeline.py` for the orchestrator and
 ├── README.md                        # this file
 ├── docs/
 │   └── architecture.md              # full design writeup, dataset analysis, justification
+├── deck/
+│   └── redrob_deck.pdf              # judge-facing deck (deliverable #2)
 ├── src/redrob_ranker/
 │   ├── jd_config.py                 # JD requirements as structured, auditable config
 │   ├── jd_query.py                  # free-text JD narrative used for semantic matching
