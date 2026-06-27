@@ -15,4 +15,5 @@ data/candidates.jsonl.gz
 # Local scratch outputs
 *.csv
 !data/sample_submission.csv
+!submission.csv
 sandbox/
