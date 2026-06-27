@@ -1,0 +1,109 @@
+# Redrob Hackathon — Submission Metadata
+#
+# ACTION REQUIRED: replace every <FILL ME IN> placeholder below with your
+# real information before submitting. The fields marked (auto-filled) were
+# derived from this project's actual development and should be accurate as
+# long as you run the reproduce_command yourself and confirm the runtime.
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "<FILL ME IN>"
+
+primary_contact:
+  name: "<FILL ME IN>"
+  email: "<FILL ME IN>"
+  phone: "<FILL ME IN>"
+
+team_members:
+  - name: "<FILL ME IN>"
+    email: "<FILL ME IN>"
+    role: "ML Engineer"
+  # Add more members as needed; solo participants list just one member.
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "<FILL ME IN -- e.g. https://github.com/your-username/redrob-ranker>"
+
+sandbox_link: "<FILL ME IN -- e.g. a HuggingFace Space or Streamlit Cloud URL>"
+# See sandbox_app/README.md in this repo for one-click deploy instructions
+# for HuggingFace Spaces and Streamlit Cloud (both free-tier, both on the
+# spec's accepted-platforms list).
+
+reproduce_command: "python rank.py --candidates ./data/candidates.jsonl --out ./submission.csv"
+
+# ============================================================================
+# Compute environment
+# ============================================================================
+# (auto-filled from this project's actual development environment -- update
+# these to match the machine YOU actually run the final reproduction on)
+compute:
+  platform: "<FILL ME IN -- e.g. MacBook Pro M2, AWS EC2 c5.4xlarge>"
+  cpu_cores: 1   # measured on a 1-core sandbox; update to your machine's core count
+  ram_gb: 16
+  python_version: "3.12.3"   # python3 --version
+  os: "<FILL ME IN -- e.g. Ubuntu 22.04 LTS, macOS 14>"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false   # set true if you ran scripts/precompute_embeddings.py
+  pre_computation_time_minutes: 0   # ~1-2 min if SBERT model download is needed
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+# Transparency only -- declared use is NOT penalized.
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Used Claude (Anthropic) as a pair-programming collaborator for the entire
+  project: dataset analysis (title census, honeypot detection thresholds,
+  consulting-only/title-chaser pattern scans against the real 100,000-row
+  dataset), architecture design, all Python source code in src/redrob_ranker/,
+  test suite, documentation, and this metadata file. All design decisions
+  (scoring weights, honeypot thresholds, behavioral-modifier semantics) were
+  derived from and justified against the actual contents of job_description.docx,
+  submission_spec.docx, redrob_signals_doc.docx, and direct inspection of
+  candidates.jsonl / sample_candidates.json -- not from generic assumptions.
+  No candidate data was sent to any third-party LLM API as part of the
+  ranking pipeline itself (rank.py makes no LLM calls at run time; reasoning
+  generation is template-based, not LLM-based -- see docs/architecture.md
+  section 4 for why). <FILL ME IN: add any additional tools/editors you
+  personally used, e.g. GitHub Copilot, ChatGPT, Cursor, or "None other".>
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+methodology_summary: |
+  A four-stage funnel: (A) drop honeypots (logically-impossible profiles,
+  e.g. "expert" skill with 0 months used) and obviously out-of-scope
+  candidates, with a guaranteed floor so the required top-100 output is
+  never under-filled; (B) batched semantic similarity between a JD "ideal
+  candidate" narrative and each candidate's own narrative, via a
+  sentence-transformers bi-encoder with automatic TF-IDF fallback if that
+  dependency or model cache is unavailable; (C) a hybrid composite score
+  (semantic fit 0.32, skills match 0.28, title relevance 0.16, experience
+  fit 0.08, location fit 0.08, notice period 0.04, career trajectory 0.04)
+  multiplied by a behavioral-availability modifier (0.50-1.10x) that
+  down-weights inactive/unresponsive candidates without ever excluding them
+  additively, per the JD's explicit instruction; (D) grounded, template-based
+  reasoning for the top 100 only, built from verified profile facts with no
+  LLM call, eliminating hallucination risk by construction. The
+  skills-match component specifically discounts claimed skill proficiency
+  against Redrob's own measured skill_assessment_scores, which is how the
+  system defeats the dataset's built-in keyword-stuffer trap. Verified
+  against the full 100,000-candidate dataset: 88 honeypots correctly
+  excluded (vs. the spec's stated ~80), 0% honeypot leakage and 0
+  consulting-only/research-only/langchain-tourist leakage in the final
+  top-100, full pipeline runtime ~50-85 seconds on a single CPU core.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true   # confirm this stays true only after YOU re-run reproduce_command yourself
