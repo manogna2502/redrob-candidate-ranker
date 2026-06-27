@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+.DS_Store
+
+# Large data files -- not meant to be committed to git; documented in
+# README.md how to obtain/place them locally before running rank.py.
+data/candidates.jsonl
+data/candidates.jsonl.gz
+
+# Local scratch outputs
+*.csv
+!data/sample_submission.csv
+sandbox/

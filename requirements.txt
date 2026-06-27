@@ -1,0 +1,21 @@
+# Core dependencies (required) -- the TF-IDF fallback path runs on these alone.
+numpy>=1.26,<3.0
+scikit-learn>=1.3,<2.0
+pandas>=2.0,<3.1
+
+# Optional dependency (recommended) -- enables the higher-quality semantic
+# backend (sentence-transformers bi-encoder). If this is not installed, or
+# fails to load the model for any reason (no network, no cached checkpoint,
+# etc.), rank.py automatically falls back to the TF-IDF backend with no error
+# and no code change required. See src/redrob_ranker/semantic.py.
+#
+# IMPORTANT for reproduction in a no-network sandbox: this package alone is
+# not enough -- the model checkpoint (sentence-transformers/all-MiniLM-L6-v2,
+# ~80MB) must already be cached locally before the timed ranking run starts.
+# Run scripts/precompute_embeddings.py once, with network access, ahead of
+# time to download and cache it. See README.md "Reproducing in a sandboxed,
+# no-network environment" section.
+sentence-transformers>=2.2,<3.0
+
+# Dev/test only -- not required to run rank.py itself.
+pytest>=7.0,<9.0
